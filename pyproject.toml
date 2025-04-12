@@ -1,0 +1,64 @@
+[project]
+name = "langgraph-task"
+version = "0.1.0"
+description = "A Python project for working with LangChain and LangGraph"
+authors = [
+    {name = "costa92", email = "costa9293@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "langchain>=0.1.0",
+    "langgraph>=0.0.17",
+    "langchain-core>=0.1.0",
+    "langchain-community>=0.3.21",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[project.scripts]
+langgraph-one = "langgraph_task.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/langgraph_task"]
+
+[tool.hatch.build.targets.sdist]
+packages = ["src/langgraph_task"]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q"
+testpaths = [
+    "tests",
+]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
+python_classes = ["Test*"]
+markers = [
+    "performance: marks tests as performance tests"
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=6.0",
+    "pytest-cov>=2.0",
+]
+
+[tool.coverage.run]
+source = ["langgraph_task"]
+branch = true
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if __name__ == .__main__.:",
+    "raise NotImplementedError",
+    "if TYPE_CHECKING:",
+    "pass",
+]
