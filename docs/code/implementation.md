@@ -100,6 +100,7 @@ def graph_img(
 ```
 
 **功能说明**：
+
 - 将图结构可视化为PNG图片
 - 支持自定义绘图方法
 - 包含输入验证
@@ -125,6 +126,7 @@ def main():
 ```
 
 **功能说明**：
+
 - 创建并初始化代理图
 - 设置初始状态
 - 执行图处理
@@ -195,6 +197,7 @@ graph_img(graph, "output.png")
 ## 配置选项
 
 ### 图像生成选项
+
 - `draw_method`: 绘图方法选择
   - `MermaidDrawMethod.API`: 使用 Mermaid.ink API（默认）
   - `MermaidDrawMethod.PYPPETEER`: 使用本地 Pyppeteer
@@ -202,6 +205,7 @@ graph_img(graph, "output.png")
 ## 开发指南
 
 ### 添加新功能
+
 1. 在相应模块中添加新函数/类
 2. 更新类型定义（如需要）
 3. 添加错误处理
@@ -209,6 +213,7 @@ graph_img(graph, "output.png")
 5. 添加测试用例
 
 ### 测试
+
 - 运行单元测试：`pytest tests/`
 - 检查覆盖率：`pytest --cov=langgraph_task`
 
