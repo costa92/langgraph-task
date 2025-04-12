@@ -24,6 +24,7 @@ class AgentState(TypedDict):
 ```
 
 **功能说明**：
+
 - 定义了代理状态的数据结构
 - 包含消息历史和下一步操作信息
 - 使用 TypedDict 确保类型安全
@@ -50,6 +51,7 @@ def process_message(state: AgentState) -> AgentState:
 ```
 
 **功能说明**：
+
 - 验证输入状态的有效性
 - 处理消息内容
 - 返回更新后的状态
@@ -67,6 +69,7 @@ def create_agent_graph() -> Graph:
 ```
 
 **功能说明**：
+
 - 创建新的状态图
 - 添加处理节点
 - 设置入口点
@@ -232,4 +235,4 @@ graph_img(graph, "output.png")
 3. 性能考虑
    - 大型消息处理
    - 图像生成优化
-   - 内存使用控制 
+   - 内存使用控制
