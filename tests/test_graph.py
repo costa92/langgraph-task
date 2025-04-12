@@ -3,12 +3,13 @@ Tests for the graph module.
 """
 import pytest
 from langchain_core.messages import HumanMessage, SystemMessage
-
 from langgraph_task.graph import (
     AgentState,
     process_message,
     create_agent_graph,
 )
+from langgraph_task.graph_img import graph_img
+
 
 def test_agent_state_type():
     """Test that AgentState type can be instantiated correctly."""
@@ -58,6 +59,8 @@ def test_create_agent_graph():
     # Run the graph
     result = graph.invoke(state)
     
+    graph_img(graph, "test_agent_graph.png")
+
     # Verify the result
     assert isinstance(result, dict)
     assert "messages" in result
@@ -65,6 +68,7 @@ def test_create_agent_graph():
     assert len(result["messages"]) == 1
     assert result["messages"][0].content == "Test message"
     assert result["next_step"] is None
+
 
 @pytest.mark.parametrize("message_content,expected_next_step", [
     ("Hello", None),

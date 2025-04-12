@@ -14,34 +14,38 @@ class AgentState(TypedDict):
     next_step: str | None
 
 def process_message(state: AgentState) -> AgentState:
-    """Process a message in the conversation."""
-    # Validate state
+    """处理会话中的消息。"""
+    # 验证状态对象
     if not isinstance(state, dict):
-        raise ValueError("State must be a dictionary")
+        raise ValueError("状态必须是字典类型")
     
+    # 验证状态字典中是否包含messages键
     if "messages" not in state:
-        raise KeyError("State must contain 'messages' key")
+        raise KeyError("状态字典必须包含'messages'键")
         
+    # 验证状态字典中是否包含next_step键
     if "next_step" not in state:
-        raise KeyError("State must contain 'next_step' key")
+        raise KeyError("状态字典必须包含'next_step'键")
         
+    # 验证消息序列不能为空
     if not state["messages"]:
-        raise ValueError("Messages sequence cannot be empty")
+        raise ValueError("消息序列不能为空")
     
     # In a real application, you would process the message here
     print("Processing message:", state["messages"][-1].content)
     return {"messages": state["messages"], "next_step": None}
 
+# 创建一个简单的代理图
 def create_agent_graph() -> Graph:
-    """Create a simple agent graph."""
-    # Create an empty graph
+    """创建一个简单的代理图。"""
+    # 创建一个空的图
     workflow = StateGraph(AgentState)
     
-    # Define the nodes
+    # 定义节点
     workflow.add_node("process", process_message)
     
-    # Define the edges
+    # 定义边缘
     workflow.set_entry_point("process")
     
-    # Compile the graph
-    return workflow.compile() 
+    # 编译图
+    return workflow.compile()
