@@ -49,3 +49,28 @@ def create_agent_graph() -> Graph:
     
     # 编译图
     return workflow.compile()
+
+
+def task_decomposition(state: AgentState) -> AgentState:
+    """任务分解。"""
+    return {"messages": state["messages"], "next_step": None} 
+
+# 创建一个简单的任务分解图  
+def create_task_decomposition_graph() -> Graph:
+    """创建一个简单的任务分解图。"""
+    # 创建一个空的图
+    workflow = StateGraph(AgentState)
+    
+    # 定义节点
+    workflow.add_node("task_decomposition", task_decomposition)
+
+    # 定义边缘
+    workflow.set_entry_point("task_decomposition")
+    
+    # 编译图    
+    return workflow.compile()
+
+
+# 创建一个简单的任务执行图
+def create_task_execution_graph() -> Graph:
+    """创建一个简单的任务执行图。"""

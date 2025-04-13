@@ -7,6 +7,7 @@ from langgraph_task.graph import (
     AgentState,
     process_message,
     create_agent_graph,
+    create_task_decomposition_graph,
 )
 from langgraph_task.graph_img import graph_img
 
@@ -150,3 +151,25 @@ def test_large_message_processing():
     # Check processing time (adjust threshold as needed)
     processing_time = end_time - start_time
     assert processing_time < 1.0, f"Processing took too long: {processing_time} seconds" 
+
+
+@pytest.mark.performance
+def test_task_decomposition_graph():
+    """Test the task decomposition graph."""
+    graph = create_task_decomposition_graph()
+    
+    state = {
+        "messages": [HumanMessage(content="Test message")],
+        "next_step": "task_decomposition"
+    }
+      
+    graph_img(graph, "test_task_decomposition_graph.png")
+
+    # Run the graph
+    result = graph.invoke(state)
+
+    print(result)
+
+    
+    
+
