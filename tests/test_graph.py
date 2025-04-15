@@ -8,8 +8,13 @@ from langgraph_task.graph import (
     process_message,
     create_agent_graph,
     create_task_decomposition_graph,
+    call_model,
 )
 from langgraph_task.graph_img import graph_img
+from langgraph_task.llm import LLM
+from unittest.mock import MagicMock
+from langchain_core.messages import AIMessage
+from unittest.mock import patch
 
 
 def test_agent_state_type():
@@ -156,20 +161,48 @@ def test_large_message_processing():
 @pytest.mark.performance
 def test_task_decomposition_graph():
     """Test the task decomposition graph."""
-    graph = create_task_decomposition_graph()
+    # Create mock LLM
+    mock_llm = MagicMock()
+    mock_response = AIMessage(content="Test response")
+    mock_llm.invoke.return_value = mock_response
     
-    state = {
-        "messages": [HumanMessage(content="Test message")],
-        "next_step": "task_decomposition"
-    }
-      
-    graph_img(graph, "test_task_decomposition_graph.png")
+    # Patch LLM creation
+    with patch('langgraph_task.llm.LLM') as mock_llm_class:
+        mock_llm_class.return_value.llm = mock_llm
+        
+        graph = create_task_decomposition_graph()
+        
+        state = {
+            "messages": [HumanMessage(content="Test message")],
+            "next_step": "task_decomposition"
+        }
+        
+        graph_img(graph, "test_task_decomposition_graph.png")
+        
+        # Run the graph
+        result = graph.invoke(state)
+        
+        # Verify result
+        assert result is not None
+        assert isinstance(result, dict)
+        assert "messages" in result
+        assert len(result["messages"]) > 0
 
-    # Run the graph
-    result = graph.invoke(state)
 
-    print(result)
-
+@pytest.mark.performance
+def test_call_model():
+    """Test the model calling function."""
+    # Create mock LLM
+    mock_llm = MagicMock()
+    mock_response = AIMessage(content="Test response")
+    mock_llm.invoke.return_value = mock_response
     
+    # Create test message
+    message = HumanMessage(content="Test message")
     
-
+    # Call the model with mock
+    response = call_model([message], model=mock_llm)
+    
+    # Verify response
+    assert response == mock_response
+    mock_llm.invoke.assert_called_once()

@@ -32,12 +32,12 @@ def test_main_success():
 def test_main_with_mock_graph(mock_create_graph):
     """Test main function with a mocked graph."""
     # Setup mock
-    mock_graph = type('MockGraph', (), {
-        'invoke': lambda x: {
-            "messages": x["messages"],
-            "next_step": None
-        }
-    })()
+    # 在LangGraph中，graph.invoke接受state作为第一个参数
+    mock_graph = type('MockGraph', (), {})()
+    mock_graph.invoke = lambda state, config=None: {
+        "messages": state["messages"],
+        "next_step": None
+    }
     mock_create_graph.return_value = mock_graph
     
     # Capture stdout

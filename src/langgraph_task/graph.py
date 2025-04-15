@@ -42,6 +42,11 @@ def task_decomposition(state: AgentState) -> AgentState:
     """Decompose tasks into subtasks."""
     return {"messages": state["messages"], "next_step": None}
 
+def call_model(state: AgentState) -> AgentState:
+    """Call the model."""
+    return {"messages": state["messages"], "next_step": None}
+
+# 任务分解
 def create_task_decomposition_graph() -> Graph:
     """Create a task decomposition graph."""
     workflow = StateGraph(AgentState)
@@ -49,7 +54,7 @@ def create_task_decomposition_graph() -> Graph:
 
     def llm_node(state: AgentState) -> AgentState:
         """LLM processing node."""
-        response = call_model(messages=state["messages"], model=llm)
+        response = call_model(state["messages"])
         messages = list(state["messages"])
         messages.append(response)
         return {"messages": messages, "next_step": None}
